@@ -21,6 +21,7 @@ const DeleteHero: FunctionComponent = () => {
       };
       const response = await fetch(`https://supermondongo.deno.dev/${name}`, {
         method: "DELETE",
+        mode: 'no-cors',
         headers: {
           "Content-Type": "application/json",
         },

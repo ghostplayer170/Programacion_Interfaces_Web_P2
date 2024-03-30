@@ -1,9 +1,15 @@
 import { FreshContext, Handlers, PageProps } from "$fresh/server.ts";
 import { Hero } from "../../types.ts";
 import Character from "../../components/Character.tsx";
+import Characters from "../../components/Characters.tsx";
+
+type Data = {
+  heros: Hero[];
+  currentPath : string;
+};
 
 export const handler: Handlers = {
-  async GET(_req: Request, ctx: FreshContext<unknown, Hero[]>) {
+  async GET(_req: Request, ctx: FreshContext<unknown, Data>) {
     const name = ctx.params.name;
     try {
       const response = await fetch(`https://supermondongo.deno.dev/${name}`);
@@ -11,26 +17,19 @@ export const handler: Handlers = {
         throw new Response("Error fetching data", { status: response.status });
       }
       const data = await response.json();
-      return await ctx.render(data);
+      return await ctx.render({heros: data, currentPath: name});
     } catch (error) {
       throw new Response(error.message, { status: 500 });
     }
   },
 };
 
-export default function hero(props: PageProps<Hero[]>) {
-  const { data } = props;
+export default function hero(props: PageProps<Data>) {
+  const { heros, currentPath } = props.data;
   return (
     <>
       <div class="flex items-center justify-center wrap justify-space-around">
-        {data.map((hero) => (
-          <Character key={hero.name} {...hero} enableDelete={true} currentPath={`/hero/${hero.name}`} />
-        ))}
-        {data.length === 0 && (
-          <div class="not-found">
-            <p>Heros not found</p>
-          </div>
-        )}
+        <Characters heros={heros} currentPath={`hero/${currentPath}`} />
       </div>
     </>
   );

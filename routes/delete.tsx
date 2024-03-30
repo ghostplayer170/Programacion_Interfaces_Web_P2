@@ -22,7 +22,12 @@ export const handler: Handlers<Data> = {
       if (response.status !== 204) {
         return new Response("Error deleting hero", { status: response.status });
       }
-      return Response.redirect("/", 303);
+      return new Response("", {
+        status: 303,
+        headers: {
+          "Location": `${currentPath}`,
+        },
+      });
     } catch (error) {
       throw new Response(error.message, { status: 500 });
     }

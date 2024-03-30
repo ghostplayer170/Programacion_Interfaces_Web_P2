@@ -1,9 +1,8 @@
-import DeleteHero from "../islands/DeleteHero.tsx"; 
+import DeleteHero from "../islands/DeleteHero.tsx";
 
-export default function Search() {
-    return (
-      <div>
-        <DeleteHero />
-      </div>
-    );
-  }
+export default function Delete() {
+  return (
+    <div>
+    </div>
+  );
+}

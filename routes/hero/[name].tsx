@@ -8,12 +8,12 @@ export const handler: Handlers = {
     try {
       const response = await fetch(`https://supermondongo.deno.dev/${name}`);
       if (response.status !== 200) {
-        throw new Error("Error fetching data");
+        throw new Response("Error fetching data", { status: response.status });
       }
       const data = await response.json();
       return await ctx.render(data);
     } catch (error) {
-      throw new Error("Error fetching data: " + error.message);
+      throw new Response(error.message, { status: 500 });
     }
   },
 };
@@ -23,8 +23,14 @@ export default function hero(props: PageProps<Hero[]>) {
   return (
     <>
       <div class="flex items-center justify-center wrap justify-space-around">
-        {data.map((hero) => <Character key={hero.name} {...hero} />)}
-        {data.length === 0 && <p>Hero not found</p>}
+        {data.map((hero) => (
+          <Character key={hero.name} {...hero} enableDelete={true} />
+        ))}
+        {data.length === 0 && (
+          <div class="not-found">
+            <p>Heros not found</p>
+          </div>
+        )}
       </div>
     </>
   );

@@ -1,18 +1,25 @@
 import { FunctionComponent } from "preact";
-import { Hero } from "../types.ts";
+import DeleteHero from "../islands/DeleteHero.tsx";
 
+type Data = {
+  name: string;
+  image: string;
+  sound: string;
+  enableDelete: boolean;
+};
 
-const Character: FunctionComponent<Hero> = (props) => {
-  const { name, image, sound } = props;
+const Character: FunctionComponent<Data> = (props) => {
+  const { name, image, sound, enableDelete } = props;
   return (
     <>
-      <div>
-        <img src={image} alt={name} class="hero-image"/>
+      <div class="hero-container">
+        <img src={image} alt={name} class="hero-image" />
         <p>{name}</p>
         <audio controls key={sound}>
           <source src={sound} type="audio/mpeg" />
           Your browser does not support the audio element.
         </audio>
+        <DeleteHero hero={name} enable={enableDelete} />
       </div>
     </>
   );

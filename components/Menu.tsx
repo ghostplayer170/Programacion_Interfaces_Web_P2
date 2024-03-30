@@ -3,9 +3,12 @@ import { FunctionComponent } from "preact";
 const Menu: FunctionComponent = () => {
   return (
     <>
-      <div>
-        <h1>Menu</h1>
+      <div class="menu">
+        <h1>LA SOCIEDAD DE LA JUSTICIA DE LOS MONDONGOS</h1>
         <ul>
+          <li>
+            <a href="/">Heros</a>
+          </li>
           <li>
             <a href="/search">Search</a>
           </li>

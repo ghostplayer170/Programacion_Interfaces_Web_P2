@@ -2,67 +2,62 @@ import { FunctionComponent } from "preact";
 import { useState } from "preact/hooks";
 import axios from "npm:axios";
 
-const DeleteHero: FunctionComponent = () => {
-  // Usar useSignal para el estado del modal
+type Data = {
+  hero: string;
+  enable: boolean;
+};
+
+const DeleteHero: FunctionComponent<Data> = (props) => {
+  const name = props.hero;
+  const enable = props.enable;
+
   const [isModalOpen, setModal] = useState<boolean>(false);
-  const [name, setName] = useState<string>("");
   const [creator, setCreator] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [deleted, setDeleted] = useState<boolean>(false);
 
-  // Funciones para abrir y cerrar el modal
   const openModal = () => setModal(true);
   const closeModal = () => setModal(false);
 
-  const deleteHero = async (name: string, creator: string) => {
+  const deleteHero = async (creator: string) => {
     try {
-      const data = {
-        creator: creator,
-      };
-      const response = await fetch(`https://supermondongo.deno.dev/${name}`, {
-        method: "DELETE",
-        body: JSON.stringify({ creator: 'Nombre del creador' }),
-      });
+      const response = await axios.delete(
+        `https://supermondongo.deno.dev/${name}`,
+        {
+          data: {
+            creator: creator,
+          },
+        },
+      );
       if (response.status !== 204) {
         setDeleted(false);
+      } else {
+        setDeleted(true);
       }
-      setDeleted(true);
     } catch (error) {
       setDeleted(false);
     }
   };
 
-  const handleErrors = (name: string, creator: string) => {
-    if (!name) {
-      setError("Name is required");
-    }
+  const handleErrors = (creator: string) => {
+    setError("");
     if (!creator) {
       setError("Creator is required");
+      return;
     }
-    if (error === "") {
-      deleteHero(name, creator);
-    }
+    deleteHero(creator);
   };
 
   return (
     <>
-      <h1>Delete Hero</h1>
-      <button onClick={openModal}>Eliminar</button>
+      {enable && <button onClick={openModal}>Delete</button>}
       {isModalOpen && (
         <dialog open id="modal" class="modal">
-          <h2></h2>
-          <p>Name of the hero</p>
-          <input
-            type="text"
-            onInput={(e) => {
-              setName(e.currentTarget.value);
-              setError("");
-            }}
-          />
+          <p>Hero to delete is {name}</p>
           <p>Creator of the hero</p>
           <input
             type="text"
-            onInput={(e) => {
+            onBlur={(e) => {
               setCreator(e.currentTarget.value);
               setError("");
             }}
@@ -70,12 +65,12 @@ const DeleteHero: FunctionComponent = () => {
           <div>
             <button
               onClick={() => {
-                handleErrors(name, creator);
+                handleErrors(creator);
               }}
             >
               Delete Hero
             </button>
-            <button onClick={closeModal}>Cerrar</button>
+            <button onClick={closeModal}>Close</button>
             {deleted && <p>Hero deleted successfully!</p>}
           </div>
         </dialog>

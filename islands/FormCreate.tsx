@@ -25,9 +25,14 @@ export const FormCreate: FunctionComponent = () => {
       };
       const response = await axios.post(
         "https://supermondongo.deno.dev/",
-        data,
+        {
+          name: name,
+          image: image,
+          sound: sound,
+          creator: creator,
+        },
       );
-      if (response.status !== 200) {
+      if (response.status !== 201) {
         return new Response("Error creating hero", { status: response.status });
       }
       setCreated(true);

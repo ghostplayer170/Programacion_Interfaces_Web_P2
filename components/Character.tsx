@@ -6,10 +6,11 @@ type Data = {
   image: string;
   sound: string;
   enableDelete: boolean;
+  currentPath: string;
 };
 
 const Character: FunctionComponent<Data> = (props) => {
-  const { name, image, sound, enableDelete } = props;
+  const { name, image, sound, enableDelete, currentPath } = props;
   return (
     <>
       <div class="hero-container">
@@ -19,7 +20,7 @@ const Character: FunctionComponent<Data> = (props) => {
           <source src={sound} type="audio/mpeg" />
           Your browser does not support the audio element.
         </audio>
-        <DeleteHero hero={name} enable={enableDelete} />
+        <DeleteHero hero={name} enable={enableDelete} currentPath={currentPath}/>
       </div>
     </>
   );

@@ -24,7 +24,7 @@ export default function hero(props: PageProps<Hero[]>) {
     <>
       <div class="flex items-center justify-center wrap justify-space-around">
         {data.map((hero) => (
-          <Character key={hero.name} {...hero} enableDelete={true} />
+          <Character key={hero.name} {...hero} enableDelete={true} currentPath={`/hero/${hero.name}`} />
         ))}
         {data.length === 0 && (
           <div class="not-found">

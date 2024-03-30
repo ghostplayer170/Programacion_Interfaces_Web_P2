@@ -1,51 +1,32 @@
 import { FunctionComponent } from "preact";
 import Character from "../components/Character.tsx";
-import { useState } from "preact/hooks";
-import axios from "npm:axios";
+import { useEffect, useState } from "preact/hooks";
 
-export const FormCreate: FunctionComponent = () => {
+type Data = {
+  created: boolean;
+};
+
+export const FormCreate: FunctionComponent<Data> = ({ created }) => {
   const [name, setName] = useState<string>("");
   const [image, setImage] = useState<string>("");
   const [sound, setSound] = useState<string>("");
-  const [creator, setCreator] = useState<string>("");
-  const [created, setCreated] = useState<boolean>(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState<boolean>(false);
 
-  const fetchCreate = async (
-    name: string,
-    image: string,
-    sound: string,
-    creator: string,
-  ) => {
-    try {
-      const data = {
-        name: name,
-        image: image,
-        sound: sound,
-        creator: creator,
-      };
-      const response = await axios.post(
-        "https://supermondongo.deno.dev/",
-        {
-          name: name,
-          image: image,
-          sound: sound,
-          creator: creator,
-        },
-      );
-      if (response.status !== 201) {
-        return new Response("Error creating hero", { status: response.status });
-      }
-      setCreated(true);
-    } catch (error) {
-      throw new Response(error.message, { status: 500 });
+  useEffect(() => {
+    if (created) {
+      setShowSuccessMessage(true);
     }
+  }, [created]);
+
+  const handleCloseSuccessMessage = () => {
+    setShowSuccessMessage(false);
   };
 
   return (
     <>
       <h1>Create Hero</h1>
       <div class="container-form-and-preview">
-        <div class="form-create">
+        <form method="POST" class="form-create" action="/create">
           <label for="name">Name:</label>
           <input
             type="text"
@@ -75,15 +56,12 @@ export const FormCreate: FunctionComponent = () => {
             type="text"
             id="creator"
             required
-            onInput={(e) => setCreator(e.currentTarget.value)}
+            name="creator"
           />
-          <button
-            type="submit"
-            onClick={() => fetchCreate(name, image, sound, creator)}
-          >
+          <button type="submit">
             Create Hero
           </button>
-        </div>
+        </form>
         <div class="preview-section">
           <h2>Preview</h2>
           <Character
@@ -91,12 +69,16 @@ export const FormCreate: FunctionComponent = () => {
             image={image}
             sound={sound}
             enableDelete={false}
+            currentPath="/create"
           />
         </div>
+        {showSuccessMessage && (
+          <dialog open id="modal-create" class="modal">
+            <p>Hero {name} created successfully!</p>
+            <button onClick={handleCloseSuccessMessage}>Close</button>
+          </dialog>
+        )}
       </div>
-      {created && (
-        <p class="success-message">Hero {name} created successfully!</p>
-      )}
     </>
   );
 };

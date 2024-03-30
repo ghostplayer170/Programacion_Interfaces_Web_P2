@@ -226,11 +226,11 @@ button:hover {
   z-index: 999;
 }
 
-#modal {
+#modal-create, #modal-delete {
   display: none;
 }
 
-#modal[open] {
+#modal-create, #modal-delete[open] {
   display: block;
 }
 

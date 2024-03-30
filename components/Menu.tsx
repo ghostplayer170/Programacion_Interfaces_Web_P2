@@ -15,9 +15,6 @@ const Menu: FunctionComponent = () => {
           <li>
             <a href="/create">Create</a>
           </li>
-          <li>
-            <a href="/delete">Delete</a>
-          </li>
         </ul>
       </div>
     </>

@@ -1,5 +1,4 @@
 import { FreshContext, Handlers, PageProps } from "$fresh/server.ts";
-import Character from "../components/Character.tsx";
 import Characters from "../components/Characters.tsx";
 import { Hero } from "../types.ts";
 
@@ -26,7 +25,7 @@ export default function Home(props: PageProps<Data>) {
   const { results } = props.data;
   return (
     <>
-      <Characters heros={results} />
+      <Characters heros={results} currentPath="/" />
     </>
   );
 }

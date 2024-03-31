@@ -1,6 +1,5 @@
 import { FunctionComponent } from "preact";
 import { useState } from "preact/hooks";
-import axios from "npm:axios";
 
 type Data = {
   hero: string;

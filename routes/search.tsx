@@ -1,4 +1,5 @@
 import { FreshContext, Handlers } from "$fresh/server.ts";
+import SearchWindow from "../components/SearchWindow.tsx";
 
 export const handler: Handlers = {
   GET(_req: Request, ctx: FreshContext) {
@@ -18,15 +19,8 @@ export const handler: Handlers = {
 
 export default function Search() {
   return (
-    <div class="container-search">
-      <h1>Search</h1>
-      <form action="/search" method="GET">
-        <label>
-          Hero name:
-        </label>
-        <input type="text" name="name" />
-        <button type="submit">Search</button>
-      </form>
-    </div>
+    <>
+      <SearchWindow />
+    </>
   );
 }

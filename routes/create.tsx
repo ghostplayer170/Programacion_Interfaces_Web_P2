@@ -40,9 +40,7 @@ export default function Create(props: PageProps<Data>) {
   const { created } = props.data;
   return (
     <>
-      <div class="create-hero-container">
-        <FormCreate created={created} />
-      </div>
+      <FormCreate created={created} />
     </>
   );
 }
